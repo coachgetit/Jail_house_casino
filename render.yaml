@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: jail-house-casino-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build -w packages/core
+    startCommand: node packages/backend/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: ALLOWED_ORIGIN
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

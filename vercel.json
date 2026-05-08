@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm install && npm run build -w packages/core && npm run build -w packages/web",
+  "outputDirectory": "packages/web/dist",
+  "installCommand": "npm install"
+}
