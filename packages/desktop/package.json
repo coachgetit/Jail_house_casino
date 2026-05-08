@@ -1,0 +1,47 @@
+{
+  "name": "@casino/desktop",
+  "version": "1.0.0",
+  "description": "Casino card game — desktop app",
+  "author": "Casino",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "npm run build:web && concurrently \"npm run watch\" \"wait-on dist/main.js && electron .\"",
+    "watch": "tsc --watch",
+    "build": "npm run build:web && tsc && cp -r ../web/dist web-dist",
+    "build:web": "cd ../web && npm run build",
+    "package": "npm run build && electron-builder",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "36.9.5",
+    "electron-builder": "^26.0.0",
+    "typescript": "^5.0.0",
+    "concurrently": "^9.0.0",
+    "wait-on": "^8.0.0",
+    "@types/node": "^22.0.0"
+  },
+  "build": {
+    "appId": "com.casino.app",
+    "productName": "Casino",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "web-dist/**",
+      "build/**"
+    ],
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
+  }
+}

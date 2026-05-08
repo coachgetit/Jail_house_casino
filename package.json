@@ -1,0 +1,8 @@
+{
+  "name": "casino-monorepo",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "jest"
+  }
+}
