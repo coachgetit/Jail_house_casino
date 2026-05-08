@@ -46,9 +46,10 @@ function Game({
   const {
     state, error,
     selectedHandCard, selectedTargets,
-    setSelectedHandCard, toggleTarget,
-    capture, build, trail, newRound,
+    toggleTarget,
+    capture, build, stack, trail, newRound,
     winner, humanPlayer, aiPlayer, isHumanTurn,
+    stackExtras, selectHandCard, toggleStackExtra,
   } = useGame(playerName);
   const { frameStyle } = useCosmetics();
 
@@ -97,16 +98,20 @@ function Game({
       <HandArea
         cards={humanPlayer.hand}
         selectedCard={selectedHandCard}
-        onSelect={setSelectedHandCard}
+        onSelect={selectHandCard}
         label={`${humanPlayer.name} (you)`}
+        stackExtras={stackExtras}
+        onToggleStackExtra={toggleStackExtra}
       />
 
       {!state.roundOver && !state.gameOver && (
         <ActionPanel
           selectedHandCard={selectedHandCard}
           selectedTargets={selectedTargets}
+          stackExtras={stackExtras}
           onCapture={capture}
           onBuild={build}
+          onStack={stack}
           onTrail={trail}
           error={error}
           disabled={!isHumanTurn}
@@ -163,7 +168,7 @@ function MultiplayerGame({
     state, error, opponentLeft,
     selectedHandCard, selectedTargets,
     setSelectedHandCard, toggleTarget,
-    capture, build, trail, nextRound,
+    capture, build, stack, trail, nextRound,
     isMyTurn, me, opponent, winner,
   } = useMultiplayerGame(socket);
   const { frameStyle } = useCosmetics();
@@ -243,6 +248,7 @@ function MultiplayerGame({
           selectedTargets={selectedTargets}
           onCapture={capture}
           onBuild={build}
+          onStack={stack}
           onTrail={trail}
           error={error}
           disabled={!isMyTurn}

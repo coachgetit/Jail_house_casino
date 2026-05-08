@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "npm run build:web && concurrently \"npm run watch\" \"wait-on dist/main.js && electron .\"",
     "watch": "tsc --watch",
-    "build": "npm run build:web && tsc && cp -r ../web/dist web-dist",
+    "build": "npm run build:web && tsc && rm -rf web-dist && cp -r ../web/dist web-dist",
     "build:web": "cd ../web && npm run build",
     "package": "npm run build && electron-builder",
     "start": "electron ."

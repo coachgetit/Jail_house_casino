@@ -64,6 +64,12 @@ export function useMultiplayerGame(socket: Socket) {
     dispatch({ type: 'build', handCard: selectedHandCard, targets: tableCards, declaredValue });
   }, [selectedHandCard, selectedTargets, dispatch]);
 
+  const stack = useCallback(() => {
+    if (!selectedHandCard) return;
+    const tableTargets = selectedTargets as (Card | import('@casino/core').Stack)[];
+    dispatch({ type: 'stack', handCard: selectedHandCard, handExtras: [], targets: tableTargets });
+  }, [selectedHandCard, selectedTargets, dispatch]);
+
   const trail = useCallback(() => {
     if (!selectedHandCard) return;
     dispatch({ type: 'trail', handCard: selectedHandCard });
@@ -82,7 +88,7 @@ export function useMultiplayerGame(socket: Socket) {
     state, yourIndex, error, opponentLeft,
     selectedHandCard, selectedTargets,
     setSelectedHandCard, toggleTarget,
-    capture, build, trail, nextRound,
+    capture, build, stack, trail, nextRound,
     isMyTurn, me, opponent, winner,
   };
 }

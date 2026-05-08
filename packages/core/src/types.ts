@@ -11,10 +11,17 @@ export interface Build {
   id: string;
   cards: Card[];
   value: number;
-  ownerId: string; // player who owns the build
+  ownerId: string;
 }
 
-export type TableEntity = Card | Build;
+export interface Stack {
+  id: string;
+  cards: Card[];
+  rank: Rank;
+  ownerId: string;
+}
+
+export type TableEntity = Card | Build | Stack;
 
 export interface Player {
   id: string;
@@ -24,7 +31,7 @@ export interface Player {
   isAI: boolean;
 }
 
-export type ActionType = 'capture' | 'build' | 'trail';
+export type ActionType = 'capture' | 'build' | 'trail' | 'stack';
 
 export interface CaptureAction {
   type: 'capture';
@@ -44,7 +51,14 @@ export interface TrailAction {
   handCard: Card;
 }
 
-export type Action = CaptureAction | BuildAction | TrailAction;
+export interface StackAction {
+  type: 'stack';
+  handCard: Card;
+  handExtras: Card[];        // additional same-rank hand cards to add to the stack
+  targets: (Card | Stack)[]; // same-rank table cards/stacks to merge into the stack
+}
+
+export type Action = CaptureAction | BuildAction | TrailAction | StackAction;
 
 export interface Score {
   playerId: string;

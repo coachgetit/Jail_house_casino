@@ -4,6 +4,7 @@ import { useCosmetics } from '../contexts/CosmeticsContext';
 interface Props {
   card: Card;
   selected?: boolean;
+  stackExtra?: boolean;
   onClick?: () => void;
   faceDown?: boolean;
   small?: boolean;
@@ -15,7 +16,7 @@ const SUIT_SYMBOL: Record<string, string> = {
 
 const RED_SUITS = new Set(['hearts', 'diamonds']);
 
-export function CardView({ card, selected, onClick, faceDown, small }: Props) {
+export function CardView({ card, selected, stackExtra, onClick, faceDown, small }: Props) {
   const { cardBackStyle } = useCosmetics();
   const isRed = RED_SUITS.has(card.suit);
   const symbol = SUIT_SYMBOL[card.suit];
@@ -24,7 +25,8 @@ export function CardView({ card, selected, onClick, faceDown, small }: Props) {
     'card',
     small ? 'card--small' : 'card--normal',
     faceDown ? 'card--face-down' : (isRed ? 'card--red' : 'card--black'),
-    selected  ? 'card--selected'  : '',
+    selected    ? 'card--selected'    : '',
+    stackExtra  ? 'card--stack-extra' : '',
     onClick   ? 'card--clickable' : '',
   ].filter(Boolean).join(' ');
 

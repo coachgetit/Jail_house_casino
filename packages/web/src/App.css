@@ -354,6 +354,12 @@
   border-color: #ff6200 !important;
 }
 
+.card--stack-extra {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4), 0 0 0 2px #b45300;
+  border-color: #b45300;
+}
+
 .card--red   { color: #c0392b; }
 .card--black { color: #1a1a1a; }
 
@@ -434,6 +440,46 @@
 .build-cards { display: flex; gap: 3px; }
 
 .build-label { color: #999; font-size: 11px; letter-spacing: 1px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+
+/* ---- Stack View ---- */
+.stack-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: default;
+  border: 2px solid #b45300;
+  border-radius: 4px;
+  padding: 6px;
+  background: #2a1500;
+  box-shadow: 0 2px 8px rgba(180,83,0,0.25);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.stack-view--clickable { cursor: pointer; }
+.stack-view--clickable:hover {
+  box-shadow: 0 4px 18px rgba(255,98,0,0.4);
+  border-color: #ff6200;
+}
+
+.stack-view--selected {
+  border-color: #ff6200 !important;
+  box-shadow: 0 0 0 2px #ff6200, 0 4px 16px rgba(255,98,0,0.35) !important;
+}
+
+.stack-cards { display: flex; gap: 3px; }
+
+.stack-label { color: #ff8c3a; font-size: 11px; letter-spacing: 1px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+
+.btn-stack {
+  background: #7a3800;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(122,56,0,0.4);
+}
+.btn-stack:hover:not(:disabled) {
+  background: #ff6200;
+  box-shadow: 0 4px 18px rgba(255,98,0,0.5);
+}
 
 /* ---- Action Panel ---- */
 .action-panel {

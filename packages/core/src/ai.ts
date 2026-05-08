@@ -1,9 +1,15 @@
 import { GameState, Action, Card, TableEntity, Build } from './types';
 import { cardValue, isFaceCard } from './deck';
-import { isCard, isBuild, validateCapture, validateBuild } from './rules';
+import { isCard, isBuild, isStack, validateCapture, validateBuild } from './rules';
 
 function allSubsets<T>(arr: T[]): T[][] {
   return arr.reduce<T[][]>((acc, val) => [...acc, ...acc.map(s => [...s, val])], [[]]).filter(s => s.length > 0);
+}
+
+function entityVal(e: TableEntity): number {
+  if (isCard(e)) return cardValue(e);
+  if (isBuild(e)) return e.value;
+  return cardValue(e.cards[0]); // stack
 }
 
 function findCaptures(handCard: Card, table: TableEntity[], playerId: string): TableEntity[][] {
@@ -16,13 +22,17 @@ function findCaptures(handCard: Card, table: TableEntity[], playerId: string): T
     return results;
   }
 
-  // Single rank matches
-  const rankMatches = table.filter(e => isCard(e) && e.rank === handCard.rank);
+  // Rank-match captures: cards and stacks of same rank
+  const rankMatches = table.filter(e =>
+    (isCard(e) && e.rank === handCard.rank) ||
+    (isStack(e) && e.rank === handCard.rank)
+  );
   if (rankMatches.length > 0) results.push(rankMatches);
 
-  // Sum captures using subsets
-  for (const subset of allSubsets(table)) {
-    const sum = subset.reduce((acc, e) => acc + (isCard(e) ? cardValue(e) : e.value), 0);
+  // Sum captures using subsets of cards and builds only (stacks excluded from sum)
+  const sumCandidates = table.filter(e => isCard(e) || isBuild(e));
+  for (const subset of allSubsets(sumCandidates)) {
+    const sum = subset.reduce((acc, e) => acc + entityVal(e), 0);
     if (sum === hv) results.push(subset);
   }
 

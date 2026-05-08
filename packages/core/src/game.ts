@@ -1,6 +1,6 @@
 import { GameState, Player, Action, Card, TableEntity } from './types';
 import { createDeck, shuffle } from './deck';
-import { validateCapture, validateBuild, applyCapture, applyBuild, applyTrail, isCard } from './rules';
+import { validateCapture, validateBuild, validateStack, applyCapture, applyBuild, applyStack, applyTrail, isCard } from './rules';
 import { applyRoundScores } from './scoring';
 
 export function createGame(
@@ -80,6 +80,12 @@ export function applyAction(action: Action, state: GameState): { state: GameStat
     const error = validateBuild(action, state);
     if (error) return { state, error };
     return { state: advance(applyBuild(action, state)), error: null };
+  }
+
+  if (action.type === 'stack') {
+    const error = validateStack(action, state);
+    if (error) return { state, error };
+    return { state: advance(applyStack(action, state)), error: null };
   }
 
   // trail

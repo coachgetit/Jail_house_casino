@@ -4,18 +4,22 @@ import type { Card, TableEntity } from '@casino/core';
 interface Props {
   selectedHandCard: Card | null;
   selectedTargets: TableEntity[];
+  stackExtras?: Card[];
   onCapture: () => void;
   onBuild: (value: number) => void;
+  onStack: () => void;
   onTrail: () => void;
   error: string | null;
   disabled: boolean;
 }
 
-export function ActionPanel({ selectedHandCard, selectedTargets, onCapture, onBuild, onTrail, error, disabled }: Props) {
+export function ActionPanel({ selectedHandCard, selectedTargets, stackExtras = [], onCapture, onBuild, onStack, onTrail, error, disabled }: Props) {
   const [buildValue, setBuildValue] = useState('');
 
-  const hasHand    = !!selectedHandCard;
-  const hasTargets = selectedTargets.length > 0;
+  const hasHand       = !!selectedHandCard;
+  const hasTargets    = selectedTargets.length > 0;
+  const stackTotal    = 1 + stackExtras.length + selectedTargets.length;
+  const canStack      = hasHand && (stackExtras.length > 0 || hasTargets);
 
   const handleBuild = () => {
     const v = parseInt(buildValue);
@@ -60,6 +64,14 @@ export function ActionPanel({ selectedHandCard, selectedTargets, onCapture, onBu
             Build
           </button>
         </div>
+
+        <button
+          className={btnCls('btn-stack', !disabled && canStack)}
+          disabled={disabled || !canStack}
+          onClick={onStack}
+        >
+          Stack{canStack ? ` (${stackTotal})` : ''}
+        </button>
 
         <button
           className={btnCls('btn-amber', !disabled && hasHand)}

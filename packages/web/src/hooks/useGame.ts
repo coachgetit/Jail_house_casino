@@ -15,24 +15,36 @@ export function useGame(playerName: string) {
   const [error, setError] = useState<string | null>(null);
   const [selectedHandCard, setSelectedHandCard] = useState<Card | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<TableEntity[]>([]);
+  const [stackExtras, setStackExtras] = useState<Card[]>([]);
 
   const dispatch = useCallback((action: Action) => {
     setState(prev => {
       const { state: next, error: err } = applyAction(action, prev);
       if (err) { setError(err); return prev; }
       setError(null);
-
       return runAiTurns(next);
     });
     setSelectedHandCard(null);
     setSelectedTargets([]);
+    setStackExtras([]);
+  }, []);
+
+  const selectHandCard = useCallback((card: Card | null) => {
+    setSelectedHandCard(card);
+    setStackExtras([]);
+  }, []);
+
+  const toggleStackExtra = useCallback((card: Card) => {
+    setStackExtras(prev => {
+      const exists = prev.some(c => c.id === card.id);
+      return exists ? prev.filter(c => c.id !== card.id) : [...prev, card];
+    });
   }, []);
 
   const toggleTarget = useCallback((entity: TableEntity) => {
     setSelectedTargets(prev => {
-      const id = 'suit' in entity ? entity.id : entity.id;
-      const exists = prev.some(e => ('suit' in e ? e.id : e.id) === id);
-      return exists ? prev.filter(e => ('suit' in e ? e.id : e.id) !== id) : [...prev, entity];
+      const exists = prev.some(e => e.id === entity.id);
+      return exists ? prev.filter(e => e.id !== entity.id) : [...prev, entity];
     });
   }, []);
 
@@ -46,6 +58,12 @@ export function useGame(playerName: string) {
     const tableCards = selectedTargets.filter((e): e is Card => 'suit' in e);
     dispatch({ type: 'build', handCard: selectedHandCard, targets: tableCards, declaredValue });
   }, [selectedHandCard, selectedTargets, dispatch]);
+
+  const stack = useCallback(() => {
+    if (!selectedHandCard) return;
+    const tableTargets = selectedTargets.filter(e => 'cards' in e || 'suit' in e) as (Card | import('@casino/core').Stack)[];
+    dispatch({ type: 'stack', handCard: selectedHandCard, handExtras: stackExtras, targets: tableTargets });
+  }, [selectedHandCard, stackExtras, selectedTargets, dispatch]);
 
   const trail = useCallback(() => {
     if (!selectedHandCard) return;
@@ -74,7 +92,8 @@ export function useGame(playerName: string) {
   return {
     state, error, selectedHandCard, selectedTargets,
     setSelectedHandCard, toggleTarget,
-    capture, build, trail, newRound, newGame,
+    capture, build, stack, trail, newRound, newGame,
+    stackExtras, selectHandCard, toggleStackExtra,
     winner, humanPlayer, aiPlayer, isHumanTurn,
   };
 }
