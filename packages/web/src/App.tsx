@@ -72,7 +72,7 @@ function Game({
 
   return (
     <div className="game-wrapper">
-      <h1 className="game-title">♠ CASINO ♦</h1>
+      <h1 className="game-title">JAIL HOUSE CASINO</h1>
 
       <div className="wager-banner">
         {avatar && <img src={avatar} alt="" className="avatar avatar--sm" style={{ width: 28, height: 28, border: frameStyle }} />}
@@ -179,7 +179,7 @@ function MultiplayerGame({
   if (!state || !me || !opponent) {
     return (
       <div className="game-wrapper">
-        <h1 className="game-title">♠ CASINO ♦</h1>
+        <h1 className="game-title">JAIL HOUSE CASINO</h1>
         <p className="ai-thinking">Connecting…</p>
       </div>
     );
@@ -188,7 +188,7 @@ function MultiplayerGame({
   if (opponentLeft) {
     return (
       <div className="game-wrapper">
-        <h1 className="game-title">♠ CASINO ♦</h1>
+        <h1 className="game-title">JAIL HOUSE CASINO</h1>
         <div className="status-panel">
           <h2 className="status-title status-title--red">Opponent Disconnected</h2>
           <p className="status-subtitle">Your opponent left the game.</p>
@@ -208,7 +208,7 @@ function MultiplayerGame({
 
   return (
     <div className="game-wrapper">
-      <h1 className="game-title">♠ CASINO ♦</h1>
+      <h1 className="game-title">JAIL HOUSE CASINO</h1>
 
       <div className="wager-banner">
         {avatar && <img src={avatar} alt="" className="avatar avatar--sm" style={{ width: 28, height: 28, border: frameStyle }} />}
@@ -441,7 +441,7 @@ function AppInner() {
     return (
       <div className="lobby">
         <div className="lobby-inner">
-          <h1 className="casino-logo">♠ CASINO <span className="suit-red">♦</span></h1>
+          <h1 className="casino-logo">JAIL HOUSE CASINO</h1>
           <p className="casino-tagline">Share this code with your opponent</p>
           <div className="room-code">{roomCode}</div>
           <p className="status-subtitle">Waiting for opponent to join…</p>
@@ -455,7 +455,7 @@ function AppInner() {
     return (
       <div className="lobby">
         <div className="lobby-inner">
-          <h1 className="casino-logo">♠ CASINO <span className="suit-red">♦</span></h1>
+          <h1 className="casino-logo">JAIL HOUSE CASINO</h1>
           <p className="casino-tagline">Finding an opponent…</p>
           <div className="spinner" />
           <button className="btn btn-wide btn-red" onClick={handleCancelFind}>Cancel</button>
@@ -468,7 +468,7 @@ function AppInner() {
     return (
       <div className="lobby">
         <div className="lobby-inner">
-          <h1 className="casino-logo">♠ CASINO <span className="suit-red">♦</span></h1>
+          <h1 className="casino-logo">JAIL HOUSE CASINO</h1>
           <p className="casino-tagline">Play vs another player</p>
           <div className="lobby-divider" />
           <button className="btn btn-wide btn-green" onClick={handleCreateRoom}>
@@ -505,10 +505,8 @@ function AppInner() {
     <>
       <div className="lobby">
         <div className="lobby-inner">
-          <h1 className="casino-logo">
-            ♠ CASINO <span className="suit-red">♦</span>
-          </h1>
-          <p className="casino-tagline">The classic fishing card game</p>
+          <h1 className="casino-logo">JAIL HOUSE CASINO</h1>
+          <p className="casino-tagline">The streets don't forgive</p>
 
           <div className="avatar-upload" onClick={() => fileInputRef.current?.click()}>
             {avatar

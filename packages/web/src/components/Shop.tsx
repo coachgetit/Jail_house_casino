@@ -20,7 +20,7 @@ export function Shop({ tokens, onClose, onEarnTokens, onSpendTokens }: Props) {
   const {
     ownedCardBacks, ownedFelts, ownedFrames,
     activeCardBack, activeFelt, activeFrame,
-    cardBackStyle, feltStyle, frameStyle,
+
     setActiveCardBack, setActiveFelt, setActiveFrame,
   } = useCosmetics();
   const { buying, error, buyTokenPack, buyCosmetic } = useShop();

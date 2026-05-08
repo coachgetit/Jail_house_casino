@@ -95,11 +95,21 @@ export function applyCapture(action: CaptureAction, state: GameState): GameState
   const player = { ...state.players[state.currentPlayerIndex] };
   const { handCard, targets } = action;
 
-  const targetIds = new Set(targets.map(t => (isCard(t) ? t.id : t.id)));
-  const capturedCards: Card[] = targets.flatMap(t => entityCards(t));
+  const targetIds = new Set(targets.map(t => t.id));
+
+  // If any target is a build, also sweep all other table entities with that build's value
+  const capturedBuildValue = targets.find(t => isBuild(t)) ? (targets.find(t => isBuild(t)) as Build).value : null;
+  const sweepIds = capturedBuildValue !== null
+    ? new Set(state.table.filter(e => !targetIds.has(e.id) && entityValue(e) === capturedBuildValue).map(e => e.id))
+    : new Set<string>();
+
+  const allCapturedIds = new Set([...targetIds, ...sweepIds]);
+  const capturedCards: Card[] = state.table
+    .filter(e => allCapturedIds.has(e.id))
+    .flatMap(e => entityCards(e));
   capturedCards.push(handCard);
 
-  const newTable = state.table.filter(e => !targetIds.has(isCard(e) ? e.id : e.id));
+  const newTable = state.table.filter(e => !allCapturedIds.has(e.id));
   const newHand = player.hand.filter(c => c.id !== handCard.id);
 
   const updatedPlayer: typeof player = {

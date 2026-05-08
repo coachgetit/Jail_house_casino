@@ -39,7 +39,7 @@ export function scoreRound(players: Player[], lastCapturePlayerId: string | null
   });
 }
 
-export function applyRoundScores(state: GameState): GameState {
+export function applyRoundScores(state: GameState, doublePoints = false): GameState {
   // Give remaining table cards to last capturer
   let players = [...state.players];
   if (state.lastCapturePlayerId) {
@@ -54,9 +54,10 @@ export function applyRoundScores(state: GameState): GameState {
   }
 
   const roundScores = scoreRound(players, state.lastCapturePlayerId);
+  const multiplier = (doublePoints || state.roundNumber === 1) ? 2 : 1;
   const newScores = { ...state.scores };
   for (const s of roundScores) {
-    newScores[s.playerId] = (newScores[s.playerId] ?? 0) + s.points;
+    newScores[s.playerId] = (newScores[s.playerId] ?? 0) + s.points * multiplier;
   }
 
   const gameOver = Object.values(newScores).some(pts => pts >= state.targetScore);

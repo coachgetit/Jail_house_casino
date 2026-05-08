@@ -40,9 +40,11 @@ export function useShop(): UseShopResult {
       if (!res.ok) throw new Error(data.error ?? 'Server error');
 
       // Open Stripe Checkout in the default browser (Electron uses openExternal)
-      const openUrl = (window as any).electronAPI?.openExternal
-        ? (window as any).electronAPI.openExternal(data.url)
-        : window.open(data.url, '_blank');
+      if ((window as any).electronAPI?.openExternal) {
+        (window as any).electronAPI.openExternal(data.url);
+      } else {
+        window.open(data.url, '_blank');
+      }
 
       // Poll for payment completion
       if (pollRef.current) clearInterval(pollRef.current);
